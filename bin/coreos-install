@@ -344,10 +344,20 @@ if [[ -n "${CLOUDINIT}" ]]; then
 fi
 
 if [[ -n "${IGNITION}" ]]; then
+
+    if [[ "${IGNITION:4:3}" == "://" ]]; then
+        if ! wget --quiet "${IGNITION}" -O "/tmp/coreos-install.json"; then
+            echo "$0: Failed to download Ignition config file (${IGNITION})" >&2
+            exit 1
+        fi
+        IGNITION="/tmp/coreos-install.json"
+    fi
+
     if [[ ! -f "${IGNITION}" ]]; then
         echo "$0: Ignition config file (${IGNITION}) does not exist." >&2
         exit 1
     fi
+
 fi
 
 if [[ -n "${OEM_ID}" ]]; then
