@@ -345,7 +345,7 @@ fi
 
 if [[ -n "${IGNITION}" ]]; then
 
-    if [[ "${IGNITION:4:3}" == "://" ]]; then
+    if [[ "${IGNITION}" =~ ^https?:// ]]; then
         if ! wget --quiet "${IGNITION}" -O "/tmp/coreos-install.json"; then
             echo "$0: Failed to download Ignition config file (${IGNITION})" >&2
             exit 1
